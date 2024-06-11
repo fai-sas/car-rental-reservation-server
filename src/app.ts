@@ -10,8 +10,8 @@ app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
 
-// application routes
-// app.use('/api/v1', router)
+//application routes
+app.use('/api/', router)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Car Rental Reservation System')

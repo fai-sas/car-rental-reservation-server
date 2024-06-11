@@ -1,4 +1,4 @@
-export interface Car {
+export interface TCar {
   name: string
   description: string
   color: string

@@ -10,6 +10,9 @@ const updateCarIntoDb = async (id: string, payload: Partial<TCar>) => {}
 
 const deleteCarFromDb = async (id: string) => {}
 
+// TODO: Route: /api/cars/return(PUT)
+const returnCarIntoDb = async (id: string, payload: Partial<TCar>) => {}
+
 export const CarServices = {
   createCarIntoDb,
   getAllCarsFromDb,

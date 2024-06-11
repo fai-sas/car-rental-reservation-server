@@ -57,10 +57,23 @@ const deleteCar = catchAsync(async (req, res) => {
   })
 })
 
+// TODO: Route: /api/cars/return(PUT)
+const returnCar = catchAsync(async (req, res) => {
+  const result = ''
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Car Deleted successfully',
+    data: result,
+  })
+})
+
 export const CarControllers = {
   createCar,
   getAllCars,
   getSingleCar,
   updateCar,
   deleteCar,
+  returnCar,
 }

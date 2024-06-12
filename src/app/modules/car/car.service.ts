@@ -6,7 +6,10 @@ const createCarIntoDb = async (payload: TCar) => {
   return result
 }
 
-const getAllCarsFromDb = async () => {}
+const getAllCarsFromDb = async () => {
+  const result = await Car.find()
+  return result
+}
 
 const getSingleCarFromDb = async (id: string) => {}
 

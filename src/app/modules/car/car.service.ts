@@ -24,7 +24,20 @@ const getSingleCarFromDb = async (id: string) => {
   return result
 }
 
-const updateCarIntoDb = async (id: string, payload: Partial<TCar>) => {}
+const updateCarIntoDb = async (id: string, payload: Partial<TCar>) => {
+  const isCarExists = await Car.findById(id)
+
+  if (!isCarExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested Car Not Found')
+  }
+
+  const result = await Car.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  })
+
+  return result
+}
 
 const deleteCarFromDb = async (id: string) => {}
 

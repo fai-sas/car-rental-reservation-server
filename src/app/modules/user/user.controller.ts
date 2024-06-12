@@ -15,7 +15,7 @@ const signUpUser = catchAsync(async (req, res) => {
 })
 
 const signInUser = catchAsync(async (req, res) => {
-  const result = await UserServices.signUpUserIntoDb(req.body)
+  const result = await UserServices.signInUserIntoDb(req.body)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

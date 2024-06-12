@@ -14,7 +14,7 @@ router.post(
 router.post(
   '/signin',
   validateRequest(UserValidation.signInUserValidationSchema),
-  UserControllers.signUpUser
+  UserControllers.signInUser
 )
 
 export const UserRoutes = router

@@ -17,7 +17,7 @@ router.get('/:id', CarControllers.getSingleCar)
 
 router.put('/:id', CarControllers.updateCar)
 
-router.delete('/:id', CarControllers.updateCar)
+router.delete('/:id', CarControllers.deleteCar)
 
 // TODO: Route: /api/cars/return(PUT)
 router.put('/return', CarControllers.returnCar)

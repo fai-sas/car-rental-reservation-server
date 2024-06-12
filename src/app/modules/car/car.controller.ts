@@ -1,12 +1,13 @@
 import httpStatus from 'http-status'
 import catchAsync from '../../utils/catchAsync'
 import sendResponse from '../../utils/sendResponse'
+import { CarServices } from './car.service'
 
 const createCar = catchAsync(async (req, res) => {
-  const result = ''
+  const result = await CarServices.createCarIntoDb(req.body)
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: httpStatus.CREATED,
     success: true,
     message: 'Car created successfully',
     data: result,
@@ -64,7 +65,7 @@ const returnCar = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Car Deleted successfully',
+    message: 'Car returned successfully',
     data: result,
   })
 })

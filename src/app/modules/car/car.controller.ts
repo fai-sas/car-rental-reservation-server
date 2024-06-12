@@ -50,7 +50,8 @@ const updateCar = catchAsync(async (req, res) => {
 })
 
 const deleteCar = catchAsync(async (req, res) => {
-  const result = ''
+  const { id } = req.params
+  const result = await CarServices.deleteCarFromDb(id)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

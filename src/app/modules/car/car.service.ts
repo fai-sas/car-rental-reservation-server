@@ -39,7 +39,24 @@ const updateCarIntoDb = async (id: string, payload: Partial<TCar>) => {
   return result
 }
 
-const deleteCarFromDb = async (id: string) => {}
+const deleteCarFromDb = async (id: string) => {
+  const isCarExists = await Car.findById(id)
+
+  if (!isCarExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested Car Not Found')
+  }
+
+  const result = await Car.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+
+  return result
+}
 
 // TODO: Route: /api/cars/return(PUT)
 const returnCarIntoDb = async (id: string, payload: Partial<TCar>) => {}

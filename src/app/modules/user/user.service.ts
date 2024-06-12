@@ -18,10 +18,20 @@ const signUpUserIntoDb = async (payload: TUser) => {
 }
 
 const signInUserIntoDb = async (payload: Partial<TUser>) => {
-  const user = await User.findOne({ email: payload.email })
+  // const user = await User.findOne({ email: payload.email })
+  const user = await User.isUserExists(payload.email as string)
+  console.log(user)
 
+  // check if user exists
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found')
+  }
+
+  // check if password is correct
+  if (
+    !(await User.isPasswordMatched(payload?.password as string, user?.password))
+  ) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Password do not match')
   }
 
   const jwtPayload = {

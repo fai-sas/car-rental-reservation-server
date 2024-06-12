@@ -1,3 +1,4 @@
+import { Model } from 'mongoose'
 import { USER_ROLE } from './user.constant'
 
 export interface TUser {
@@ -7,6 +8,17 @@ export interface TUser {
   role: 'user' | 'admin'
   phone: string
   address: string
+}
+
+export interface UserModel extends Model<TUser> {
+  //instance methods for checking if the user exist
+  isUserExists(id: string): Promise<TUser>
+
+  //instance methods for checking if passwords are matched
+  isPasswordMatched(
+    plainPassword: string,
+    hashedPassword: string
+  ): Promise<boolean>
 }
 
 export type TUserRole = keyof typeof USER_ROLE

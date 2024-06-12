@@ -6,7 +6,10 @@ const createBookingIntoDb = async (payload: TBooking) => {
   return result
 }
 
-const getAllBookingsFromDb = async (query: Record<string, unknown>) => {}
+const getAllBookingsFromDb = async (query: Record<string, unknown>) => {
+  const result = await Booking.find()
+  return result
+}
 
 const getUserBookingsFromDb = async () => {}
 

@@ -5,7 +5,7 @@ export interface TUser {
   email: string
   password: string
   role: 'user' | 'admin'
-  phone: number
+  phone: string
   address: string
 }
 

@@ -2,11 +2,13 @@ import express from 'express'
 import validateRequest from '../../middlewares/validateRequest'
 import { CarValidation } from './car.validation'
 import { CarControllers } from './car.controller'
+import auth from '../../middlewares/auth'
 
 const router = express.Router()
 
 router.post(
   '/',
+  auth('admin'),
   validateRequest(CarValidation.createCarValidationSchema),
   CarControllers.createCar
 )

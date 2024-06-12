@@ -15,10 +15,7 @@ const signUpUserValidationSchema = z.object({
     role: z.enum(['user', 'admin'], {
       errorMap: () => ({ message: 'Role must be either user or admin' }),
     }),
-    phone: z
-      .number()
-      .int({ message: 'Phone number must be a number' })
-      .positive({ message: 'Phone number must be positive' }),
+    phone: z.string().min(1, 'Phone is required'),
     address: z.string().min(1, 'Description is required'),
   }),
 })

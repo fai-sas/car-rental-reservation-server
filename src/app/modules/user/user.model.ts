@@ -26,7 +26,7 @@ const userSchema = new Schema<TUser>(
       },
     },
     phone: {
-      type: Number,
+      type: String,
       required: [true, 'Phone number is required'],
     },
     address: {

@@ -67,4 +67,5 @@ export const CarServices = {
   getSingleCarFromDb,
   updateCarIntoDb,
   deleteCarFromDb,
+  returnCarIntoDb,
 }

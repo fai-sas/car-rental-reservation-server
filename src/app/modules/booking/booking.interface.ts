@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose'
 
 export interface TBooking {
-  date: Date
+  date: String
   user: Schema.Types.ObjectId
   car: Schema.Types.ObjectId
   startTime: string

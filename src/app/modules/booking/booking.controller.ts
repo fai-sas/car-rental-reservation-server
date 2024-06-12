@@ -1,12 +1,13 @@
 import httpStatus from 'http-status'
 import catchAsync from '../../utils/catchAsync'
 import sendResponse from '../../utils/sendResponse'
+import { BookingServices } from './booking.service'
 
 const createBooking = catchAsync(async (req, res) => {
-  const result = ''
+  const result = await BookingServices.createBookingIntoDb(req.body)
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: httpStatus.CREATED,
     success: true,
     message: 'Car booked successfully',
     data: result,

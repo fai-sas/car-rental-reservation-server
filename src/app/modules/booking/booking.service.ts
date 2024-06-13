@@ -6,8 +6,22 @@ const createBookingIntoDb = async (payload: TBooking) => {
   return (await result.populate('user')).populate('car')
 }
 
-const getAllBookingsFromDb = async (query: Record<string, unknown>) => {
-  const result = await Booking.find()
+const getAllBookingsFromDb = async (carId: string, date: string) => {
+  const filter: any = {}
+
+  if (carId) {
+    filter.car = carId
+  }
+
+  if (date) {
+    filter.date = date
+  }
+
+  console.log({ filter })
+
+  const result = await Booking.find(filter)
+  console.log(result)
+
   return result
 }
 

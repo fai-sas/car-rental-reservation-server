@@ -14,12 +14,14 @@ const signUpUserIntoDb = async (payload: TUser) => {
 
   const result = await User.create(payload)
 
-  return result
+  const userObj = result?.toObject()
+  delete userObj?.password
+
+  return userObj
 }
 
 const signInUserIntoDb = async (payload: Partial<TUser>) => {
-  // const user = await User.findOne({ email: payload.email })
-  const user = await User.isUserExists(payload.email as string)
+  const user = await User.findOne({ email: payload.email }).select('+password')
   console.log(user)
 
   // check if user exists
@@ -45,7 +47,7 @@ const signInUserIntoDb = async (payload: Partial<TUser>) => {
     config.jwt_access_expires_in as string
   )
 
-  console.log({ jwtPayload, token })
+  user.password = undefined
 
   return { user, token }
 }

@@ -17,7 +17,7 @@ const userSchema = new Schema<TUser, UserModel>(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      // select: false,
+      select: false,
     },
     role: {
       type: String,
@@ -41,10 +41,6 @@ const userSchema = new Schema<TUser, UserModel>(
   }
 )
 
-userSchema.statics.isUserExists = async function (email: string) {
-  return await User.findOne({ email })
-}
-
 userSchema.pre('save', async function (next) {
   const user = this
   user.password = await bcrypt.hash(
@@ -59,6 +55,10 @@ userSchema.post('save', function (doc, next) {
   doc.password = ''
   next()
 })
+
+userSchema.statics.isUserExists = async function (email: string) {
+  return await User.findOne({ email })
+}
 
 userSchema.statics.isPasswordMatched = async function (
   plainPassword: string,

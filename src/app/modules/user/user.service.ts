@@ -37,6 +37,7 @@ const signInUserIntoDb = async (payload: Partial<TUser>) => {
   }
 
   const jwtPayload = {
+    userId: user._id,
     email: user.email,
     role: user.role,
   }

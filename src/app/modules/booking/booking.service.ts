@@ -3,7 +3,7 @@ import AppError from '../../errors/AppError'
 import { Car } from '../car/car.model'
 import { TBooking } from './booking.interface'
 import { Booking } from './booking.model'
-import { ObjectId, Types } from 'mongoose'
+import { Types } from 'mongoose'
 
 const createBookingIntoDb = async (
   payload: Partial<TBooking>,
@@ -46,11 +46,11 @@ const getAllBookingsFromDb = async (carId: string, date: string) => {
   return result
 }
 
-const getUserBookingsFromDb = async (userId: ObjectId) => {
-  // const result = await Booking.find({ userId })
-  const result = await Booking.find({ userId }).populate('user')
+const getUserBookingsFromDb = async (userId: string) => {
+  const user = new Types.ObjectId(userId)
 
-  console.log('getUserBookingsFromDb:', { userId, result })
+  const result = await Booking.find({ user }).populate('user').populate('car')
+
   return result
 }
 

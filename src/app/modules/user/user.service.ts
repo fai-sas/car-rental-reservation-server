@@ -22,7 +22,6 @@ const signUpUserIntoDb = async (payload: TUser) => {
 
 const signInUserIntoDb = async (payload: Partial<TUser>) => {
   const user = await User.findOne({ email: payload.email }).select('+password')
-  console.log(user)
 
   // check if user exists
   if (!user) {

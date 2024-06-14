@@ -41,7 +41,7 @@ const createBookingIntoDb = async (
   } catch (error) {
     await session.abortTransaction()
     session.endSession()
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to Create Booking')
+    throw new AppError(httpStatus.BAD_REQUEST, `${error?.message}`)
   }
 }
 

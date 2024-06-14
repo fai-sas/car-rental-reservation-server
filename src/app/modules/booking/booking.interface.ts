@@ -7,5 +7,4 @@ export interface TBooking {
   startTime: string
   endTime: string
   totalCost: number
-  isBooked: 'unconfirmed' | 'confirmed'
 }

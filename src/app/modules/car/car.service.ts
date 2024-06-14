@@ -98,8 +98,16 @@ const returnCarIntoDb = async (payload: {
 
     await Car.updateOne({ _id: booking.car }, { status: 'available' })
 
+    await session.commitTransaction()
+    session.endSession()
+
     return (await result?.populate('user')).populate('car')
-  } catch (error) {}
+  } catch (error) {
+    await session.abortTransaction()
+    session.endSession()
+    console.log(error)
+    throw new AppError(httpStatus.BAD_REQUEST, `${error?.message}`)
+  }
 }
 
 export const CarServices = {

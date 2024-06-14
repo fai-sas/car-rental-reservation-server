@@ -42,21 +42,8 @@ const getUserBookings = catchAsync(async (req, res) => {
   })
 })
 
-// TODO: Route: /api/cars/return(PUT)
-const returnCar = catchAsync(async (req, res) => {
-  const result = ''
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Car updated successfully',
-    data: result,
-  })
-})
-
 export const BookingControllers = {
   createBooking,
   getAllBookings,
   getUserBookings,
-  returnCar,
 }

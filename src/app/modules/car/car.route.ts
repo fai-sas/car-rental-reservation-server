@@ -22,6 +22,7 @@ router.put('/:id', auth('admin'), CarControllers.updateCar)
 router.delete('/:id', auth('admin'), CarControllers.deleteCar)
 
 // TODO: Route: /api/cars/return(PUT)
-router.put('/return', CarControllers.returnCar)
+// router.put('/return', auth('admin'), CarControllers.returnCar)
+router.patch('/return', CarControllers.returnCar)
 
 export const CarRoutes = router

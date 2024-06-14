@@ -61,9 +61,9 @@ const deleteCar = catchAsync(async (req, res) => {
   })
 })
 
-// TODO: Route: /api/cars/return(PUT)
 const returnCar = catchAsync(async (req, res) => {
-  const result = ''
+  const { bookingId, endTime } = req.body
+  const result = await CarServices.returnCarIntoDb({ bookingId, endTime })
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -2,6 +2,9 @@ import httpStatus from 'http-status'
 import AppError from '../../errors/AppError'
 import { TCar } from './car.interface'
 import { Car } from './car.model'
+import { Booking } from '../booking/booking.model'
+import { calculateTotalCost } from './car.utils'
+import mongoose, { Types } from 'mongoose'
 
 const createCarIntoDb = async (payload: TCar) => {
   const result = await Car.create(payload)
@@ -10,7 +13,6 @@ const createCarIntoDb = async (payload: TCar) => {
 
 const getAllCarsFromDb = async () => {
   const result = await Car.find()
-
   return result
 }
 
@@ -58,8 +60,47 @@ const deleteCarFromDb = async (id: string) => {
   return result
 }
 
-// TODO: Route: /api/cars/return(PUT)
-const returnCarIntoDb = async (id: string, payload: Partial<TCar>) => {}
+const returnCarIntoDb = async (payload: {
+  bookingId: string
+  endTime: string
+}) => {
+  const session = await mongoose.startSession()
+
+  try {
+    session.startTransaction()
+    const bookingId = new Types.ObjectId(payload.bookingId)
+
+    const booking = await Booking.findById(bookingId).populate('car')
+
+    console.log('return car service:', booking)
+
+    if (!booking) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Booking Not Found')
+    }
+
+    if (!booking.car || !('pricePerHour' in booking.car)) {
+      throw new AppError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        'Car data not populated correctly'
+      )
+    }
+
+    const pricePerHour = Number(booking.car.pricePerHour)
+
+    booking.endTime = payload.endTime
+    booking.totalCost = calculateTotalCost(
+      booking.startTime,
+      payload.endTime,
+      pricePerHour
+    )
+
+    const result = await booking.save()
+
+    await Car.updateOne({ _id: booking.car }, { status: 'available' })
+
+    return (await result?.populate('user')).populate('car')
+  } catch (error) {}
+}
 
 export const CarServices = {
   createCarIntoDb,

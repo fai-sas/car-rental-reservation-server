@@ -7,6 +7,12 @@ import { calculateTotalCost } from './car.utils'
 import mongoose, { Types } from 'mongoose'
 
 const createCarIntoDb = async (payload: TCar) => {
+  const existingCar = await Car.isCarExists(payload.name)
+
+  if (existingCar) {
+    throw new Error('Car already exists')
+  }
+
   const result = await Car.create(payload)
   return result
 }

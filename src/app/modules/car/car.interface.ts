@@ -6,6 +6,7 @@ export interface TCar {
   description: string
   color: string
   status: 'available' | 'unavailable' | 'booked' | 'returned'
+  carType: 'SUV' | 'Hybrid' | 'Sedan'
   features:
     | string[]
     | 'GPS'
@@ -27,7 +28,7 @@ export interface TCar {
     | 'San Diego'
     | 'Dallas'
     | 'San Jose'
-  images: string[]
+  image?: string
   year: number
   model: string
   seats: number

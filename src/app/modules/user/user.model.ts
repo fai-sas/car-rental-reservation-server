@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import bcrypt from 'bcrypt'
 import { Schema, model } from 'mongoose'
 import { TUser, UserModel } from './user.interface'
@@ -94,6 +95,15 @@ userSchema.statics.isPasswordMatched = async function (
   hashedPassword: string
 ) {
   return await bcrypt.compare(plainPassword, hashedPassword)
+}
+
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+  passwordChangedTimestamp: Date,
+  jwtIssuedTimestamp: number
+) {
+  const passwordChangedTime =
+    new Date(passwordChangedTimestamp).getTime() / 1000
+  return passwordChangedTime > jwtIssuedTimestamp
 }
 
 export const User = model<TUser, UserModel>('User', userSchema)

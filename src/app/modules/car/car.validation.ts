@@ -10,6 +10,7 @@ const createCarValidationSchema = z.object({
     status: z
       .enum(['available', 'unavailable', 'booked', 'returned'])
       .default('available'),
+    carType: z.enum(['SUV', 'Hybrid', 'Sedan']),
     features: z
       .enum([
         'GPS',
@@ -37,9 +38,7 @@ const createCarValidationSchema = z.object({
       'Dallas',
       'San Jose',
     ]),
-    images: z
-      .array(z.string())
-      .min(1, 'At least one image of the car is required'),
+    image: z.string().min(1, 'Image of the car is required').optional(),
     year: z.number({
       required_error: 'The manufacturing year of the car is required',
     }),

@@ -21,6 +21,10 @@ const carSchema = new Schema<TCar, CarModel>(
       enum: ['available', 'unavailable', 'booked', 'returned'],
       default: 'available',
     },
+    carType: {
+      type: String,
+      enum: ['SUV', 'Hybrid', 'Sedan'],
+    },
     features: {
       type: [String],
       enum: [
@@ -55,9 +59,9 @@ const carSchema = new Schema<TCar, CarModel>(
       ],
       required: [true, 'The location of the car is required'],
     },
-    images: {
-      type: [String],
-      required: [true, 'At least one image of the car is required'],
+    image: {
+      type: String,
+      required: [true, 'Car images are required'],
     },
     year: {
       type: Number,

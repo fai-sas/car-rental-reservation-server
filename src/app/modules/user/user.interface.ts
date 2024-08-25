@@ -11,6 +11,7 @@ export interface TUser {
   phone?: string
   address: string
   termsAccepted: boolean
+  passwordChangedAt?: Date
 }
 
 export interface UserModel extends Model<TUser> {
@@ -22,6 +23,11 @@ export interface UserModel extends Model<TUser> {
     plainPassword: string,
     hashedPassword: string
   ): Promise<boolean>
+
+  isJWTIssuedBeforePasswordChanged(
+    passwordChangedTimestamp: Date,
+    jwtIssuedTimestamp: number
+  ): boolean
 }
 
 export type TUserRole = keyof typeof USER_ROLE

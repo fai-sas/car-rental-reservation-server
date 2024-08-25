@@ -19,6 +19,17 @@ const userSchema = new Schema<TUser, UserModel>(
       required: [true, 'Password is required'],
       select: false,
     },
+    confirmPassword: {
+      type: String,
+      required: [true, 'Confirm Password is required'],
+      select: false,
+      validate: {
+        validator: function (this: TUser) {
+          return this.password === this.confirmPassword
+        },
+        message: 'Passwords do not match',
+      },
+    },
     role: {
       type: String,
       required: [true, 'Role is required'],
@@ -35,16 +46,34 @@ const userSchema = new Schema<TUser, UserModel>(
       type: String,
       required: [true, 'Address is required'],
     },
+    termsAccepted: {
+      type: Boolean,
+      required: [true, 'You must accept the terms and conditions'],
+      validate: {
+        validator: function (value: boolean) {
+          return value === true
+        },
+        message: 'You must accept the terms and conditions to sign up',
+      },
+    },
   },
+
   {
     timestamps: true,
   }
 )
 
 userSchema.pre('save', async function (next) {
-  const user = this
-  user.password = await bcrypt.hash(
-    user.password,
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds)
+  )
+  next()
+})
+
+userSchema.pre('save', async function (next) {
+  this.confirmPassword = await bcrypt.hash(
+    this.confirmPassword,
     Number(config.bcrypt_salt_rounds)
   )
   next()

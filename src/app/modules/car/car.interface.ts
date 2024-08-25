@@ -31,7 +31,7 @@ export interface TCar {
   year: number
   model: string
   seats: number
-  fuelType: string
+  fuelType: 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid'
   transmission: 'automatic' | 'manual'
   isDeleted: boolean
 }

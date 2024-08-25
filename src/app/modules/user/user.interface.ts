@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model } from 'mongoose'
 import { USER_ROLE } from './user.constant'
 
@@ -5,9 +6,11 @@ export interface TUser {
   name: string
   email: string
   password: string
+  confirmPassword: string
   role: 'user' | 'admin'
-  phone: string
+  phone?: string
   address: string
+  termsAccepted: boolean
 }
 
 export interface UserModel extends Model<TUser> {

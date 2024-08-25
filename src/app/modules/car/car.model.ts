@@ -73,6 +73,7 @@ const carSchema = new Schema<TCar, CarModel>(
     },
     fuelType: {
       type: String,
+      enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'],
       required: [true, 'The fuel type of the car is required'],
     },
     transmission: {

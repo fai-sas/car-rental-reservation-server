@@ -47,7 +47,7 @@ const createCarValidationSchema = z.object({
     seats: z.number({
       required_error: 'The number of seats is required',
     }),
-    fuelType: z.string().min(1, 'The fuel type of the car is required'),
+    // fuelType: z.string().min(1, 'The fuel type of the car is required'),
     // transmission: z.enum(['automatic', 'manual']).(1, 'The transmission type is required'),
     isDeleted: z.boolean().default(false),
   }),

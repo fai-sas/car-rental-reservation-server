@@ -12,10 +12,19 @@ const signUpUserIntoDb = async (payload: TUser) => {
     throw new Error('User with this email already exists')
   }
 
+  if (payload.password !== payload.confirmPassword) {
+    throw new Error('Passwords do not match')
+  }
+
+  if (!payload.termsAccepted) {
+    throw new Error('You must accept the terms and conditions')
+  }
+
   const result = await User.create(payload)
 
   const userObj = result?.toObject()
   delete userObj?.password
+  delete userObj?.confirmPassword
 
   return userObj
 }

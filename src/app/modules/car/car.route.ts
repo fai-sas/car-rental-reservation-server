@@ -6,9 +6,15 @@ import auth from '../../middlewares/auth'
 
 const router = express.Router()
 
+// router.post(
+//   '/',
+//   auth('admin'),
+//   validateRequest(CarValidation.createCarValidationSchema),
+//   CarControllers.createCar
+// )
+
 router.post(
   '/',
-  auth('admin'),
   validateRequest(CarValidation.createCarValidationSchema),
   CarControllers.createCar
 )

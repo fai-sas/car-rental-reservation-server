@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { z } from 'zod'
 
 const dateSchema = z.string().refine(
@@ -14,7 +16,7 @@ const dateSchema = z.string().refine(
 
 const createBookingValidationSchema = z.object({
   body: z.object({
-    date: dateSchema,
+    // date: dateSchema,
     user: z.string().min(1, 'User ID is required').optional(),
     car: z.string().min(1, 'Car ID is required'),
     startTime: z.string().min(1, 'Start time is required'),

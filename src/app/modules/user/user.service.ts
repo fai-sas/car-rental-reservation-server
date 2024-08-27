@@ -66,9 +66,57 @@ const signInUserIntoDb = async (payload: Partial<TUser>) => {
   )
 
   // user.password = undefined
-  console.log(user)
 
   return { user, accessToken, refreshToken }
+}
+
+const getAllUsersFromDb = async () => {
+  const result = await User.find()
+  return result
+}
+
+const getSingleUserFromDb = async (id: string) => {
+  const result = await User.findById(id)
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested User Not Found')
+  }
+
+  return result
+}
+
+const updateUserIntoDb = async (id: string, payload: Partial<TUser>) => {
+  const isUserExists = await User.findById(id)
+
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested User Not Found')
+  }
+
+  const result = await User.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  })
+
+  return result
+}
+
+const deleteUserFromDb = async (id: string) => {
+  const isUserExists = await User.findById(id)
+
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested Car Not Found')
+  }
+
+  const result = await User.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+
+  return result
 }
 
 const refreshToken = async (token: string) => {
@@ -110,5 +158,9 @@ const refreshToken = async (token: string) => {
 export const UserServices = {
   signUpUserIntoDb,
   signInUserIntoDb,
+  getAllUsersFromDb,
+  getSingleUserFromDb,
+  updateUserIntoDb,
+  deleteUserFromDb,
   refreshToken,
 }

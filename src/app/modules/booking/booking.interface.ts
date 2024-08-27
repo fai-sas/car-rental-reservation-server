@@ -1,10 +1,12 @@
 import { Schema } from 'mongoose'
 
 export interface TBooking {
-  date: String
+  date: string
   user: Schema.Types.ObjectId
   car: Schema.Types.ObjectId
   startTime: string
   endTime: string
   totalCost: number
+  isDeleted: boolean
+  isApproved: boolean
 }

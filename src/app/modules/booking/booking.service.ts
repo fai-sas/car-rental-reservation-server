@@ -72,8 +72,48 @@ const getUserBookingsFromDb = async (userId: string) => {
   return result
 }
 
+const editBookingFromDb = async (id: string) => {
+  const isBookingExists = await Booking.findById(id)
+
+  if (!isBookingExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested Booking Not Found')
+  }
+
+  const result = await Booking.findByIdAndUpdate(
+    id,
+    { isApproved: true },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+
+  return result
+}
+
+const deleteBookingFromDb = async (id: string) => {
+  const isBookingExists = await Booking.findById(id)
+
+  if (!isBookingExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested Booking Not Found')
+  }
+
+  const result = await Booking.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+
+  return result
+}
+
 export const BookingServices = {
   createBookingIntoDb,
   getAllBookingsFromDb,
   getUserBookingsFromDb,
+  editBookingFromDb,
+  deleteBookingFromDb,
 }

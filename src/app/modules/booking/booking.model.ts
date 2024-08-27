@@ -30,10 +30,29 @@ const bookingSchema = new Schema<TBooking>(
       type: Number,
       default: 0,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    isApproved: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
   }
 )
+
+// filter out deleted documents
+bookingSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
+
+bookingSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
 
 export const Booking = model<TBooking>('Booking', bookingSchema)

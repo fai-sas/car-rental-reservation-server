@@ -48,8 +48,68 @@ const refreshToken = catchAsync(async (req, res) => {
   })
 })
 
+const getAllUsers = catchAsync(async (req, res) => {
+  const result = await UserServices.getAllUsersFromDb()
+
+  if (result.length === 0) {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'No Data Found',
+      data: result,
+    })
+  }
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users retrieved successfully',
+    data: result,
+  })
+})
+
+const getSingleUser = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await UserServices.getSingleUserFromDb(id)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User retrieved successfully',
+    data: result,
+  })
+})
+
+const updateUser = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await UserServices.updateUserIntoDb(id, req.body)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated successfully',
+    data: result,
+  })
+})
+
+const deleteUser = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await UserServices.deleteUserFromDb(id)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Deleted successfully',
+    data: result,
+  })
+})
+
 export const UserControllers = {
   signUpUser,
   signInUser,
   refreshToken,
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 }

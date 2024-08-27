@@ -33,7 +33,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      required: [true, 'Role is required'],
+      default: 'user',
       enum: {
         values: ['user', 'admin'],
         message: '{VALUE} is not a valid role',
@@ -41,7 +41,6 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     phone: {
       type: String,
-      required: [true, 'Phone number is required'],
     },
     address: {
       type: String,

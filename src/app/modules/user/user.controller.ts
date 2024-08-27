@@ -80,6 +80,39 @@ const getSingleUser = catchAsync(async (req, res) => {
   })
 })
 
+// const getUser = catchAsync(async (req, res) => {
+//   const userId = req?.user?.userId
+
+//   const result = await UserServices.getUserProfile(userId)
+
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'User profile retrieved successfully',
+//     data: result,
+//   })
+// })
+
+const getUser = catchAsync(async (req, res) => {
+  const userId = req.user?.userId // Extract user ID from req.user
+
+  if (!userId) {
+    return res.status(httpStatus.BAD_REQUEST).json({
+      success: false,
+      message: 'User ID not provided',
+    })
+  }
+
+  const result = await UserServices.getUserProfile(userId)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User profile retrieved successfully',
+    data: result,
+  })
+})
+
 const updateUser = catchAsync(async (req, res) => {
   const { id } = req.params
   const result = await UserServices.updateUserIntoDb(id, req.body)
@@ -110,6 +143,7 @@ export const UserControllers = {
   refreshToken,
   getAllUsers,
   getSingleUser,
+  getUser,
   updateUser,
   deleteUser,
 }

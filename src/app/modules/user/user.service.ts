@@ -4,6 +4,7 @@ import { TUser } from './user.interface'
 import { User } from './user.model'
 import { createToken, verifyToken } from './user.utils'
 import config from '../../config'
+import { Types } from 'mongoose'
 
 const signUpUserIntoDb = async (payload: TUser) => {
   const existingUser = await User.findOne({ email: payload.email })
@@ -101,6 +102,28 @@ const updateUserIntoDb = async (id: string, payload: Partial<TUser>) => {
   return result
 }
 
+// const getUserProfile = async (userId: string) => {
+//   const user = new Types.ObjectId(userId)
+
+//   const result = await User.find({ user }).populate('user').populate('car')
+
+//   return result
+// }
+
+const getUserProfile = async (userId: string) => {
+  if (!Types.ObjectId.isValid(userId)) {
+    throw new Error('Invalid user ID')
+  }
+
+  const result = await User.findById(userId).populate('car')
+
+  if (!result) {
+    throw new Error('User not found')
+  }
+
+  return result
+}
+
 const deleteUserFromDb = async (id: string) => {
   const isUserExists = await User.findById(id)
 
@@ -164,5 +187,6 @@ export const UserServices = {
   getSingleUserFromDb,
   updateUserIntoDb,
   deleteUserFromDb,
+  getUserProfile,
   refreshToken,
 }

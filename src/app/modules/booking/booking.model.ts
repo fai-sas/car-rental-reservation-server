@@ -38,6 +38,39 @@ const bookingSchema = new Schema<TBooking>(
       type: Boolean,
       default: false,
     },
+    paymentStatus: {
+      type: String,
+      enum: ['Pending', 'Paid', 'Failed'],
+      default: 'Pending',
+    },
+    transactionId: {
+      type: String,
+    },
+    nid: {
+      type: String,
+      required: [true, 'NID is required'],
+    },
+    drivingLicense: {
+      type: String,
+      required: [true, 'Driving License is required'],
+    },
+    paymentInfo: {
+      type: String,
+      required: [true, 'Payment Info is required'],
+      default: 'cash',
+    },
+    additionalOptions: {
+      type: [String],
+      enum: [
+        'GPS',
+        'Child Seat',
+        'Bluetooth',
+        'Backup Camera',
+        'Heated Seats',
+        'Sunroof',
+        'All-Wheel Drive',
+      ],
+    },
   },
   {
     timestamps: true,

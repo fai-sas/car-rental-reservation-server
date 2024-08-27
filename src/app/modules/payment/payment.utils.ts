@@ -4,13 +4,13 @@ import config from '../../config'
 
 export const initiatePayment = async (paymentData: any) => {
   try {
-    const response = await axios.post(process.env.PAYMENT_URL!, {
+    const response = await axios.post(config.payment_url!, {
       store_id: config.store_id,
       signature_key: config.signature_key,
       tran_id: paymentData?.transactionId,
-      success_url: `http://localhost:5000/api/payment/confirmation?transactionId=${paymentData.transactionId}&status=success`,
-      fail_url: `http://localhost:5000/api/payment/confirmation?status=failed`,
-      cancel_url: 'http://localhost:5173/',
+      success_url: `https://car-rental-reservation-server-theta.vercel.app/api/payment/confirmation?transactionId=${paymentData.transactionId}&status=success`,
+      fail_url: `https://car-rental-reservation-server-theta.vercel.app/api/payment/confirmation?status=failed`,
+      cancel_url: 'https://car-rental-cf.netlify.app',
       amount: paymentData?.totalPrice,
       currency: 'BDT',
       desc: 'Merchant Registration Payment',

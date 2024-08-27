@@ -128,8 +128,6 @@ const returnCarIntoDb = async (payload: {
 
     const booking = await Booking.findById(bookingId).populate('car')
 
-    console.log('return car service:', booking)
-
     if (!booking) {
       throw new AppError(httpStatus.NOT_FOUND, 'Booking Not Found')
     }

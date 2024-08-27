@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import router from './app/routes'
 import globalErrorHandler from './app/middlewares/globalErrorhandler'
 import notFound from './app/middlewares/notFound'
+import path from 'path'
 
 const app: Application = express()
 
@@ -22,6 +23,8 @@ app.use(
   })
 )
 app.use(cookieParser())
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')))
 
 //application routes
 app.use('/api/', router)

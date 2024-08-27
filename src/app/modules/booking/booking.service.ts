@@ -56,10 +56,7 @@ const getAllBookingsFromDb = async (carId: string, date: string) => {
     filter.date = date
   }
 
-  console.log({ filter })
-
   const result = await Booking.find(filter).populate('user').populate('car')
-  console.log(result)
 
   return result
 }

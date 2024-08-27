@@ -1,7 +1,39 @@
 import { join } from 'path'
-import { verifyPayment } from './payment.utils'
+import { initiatePayment, verifyPayment } from './payment.utils'
 import { readFileSync } from 'fs'
 import { Booking } from '../booking/booking.model'
+import { Payment } from './payment.model'
+
+const createPaymentIntoDB = async (payment: any) => {
+  const { user, totalPrice } = payment
+
+  const transactionId = `TXN-${Date.now()}`
+
+  const order = new Payment({
+    user,
+    totalPrice,
+    status: 'Pending',
+    paymentStatus: 'Pending',
+    transactionId,
+  })
+
+  await order.save()
+
+  const paymentData = {
+    transactionId,
+    totalPrice,
+    customerName: user.name,
+    customerEmail: user.email,
+    customerPhone: user.phone,
+  }
+
+  //payment
+  const paymentSession = await initiatePayment(paymentData)
+
+  console.log(paymentSession)
+
+  return paymentSession
+}
 
 const confirmationService = async (transactionId: string, status: string) => {
   const verifyResponse = await verifyPayment(transactionId)
@@ -22,7 +54,7 @@ const confirmationService = async (transactionId: string, status: string) => {
     message = 'Payment Failed!'
   }
 
-  const filePath = join(__dirname, '../../../views/confirmation.html')
+  const filePath = join(__dirname, '../../../../public/confirmation.html')
   let template = readFileSync(filePath, 'utf-8')
 
   template = template.replace('{{message}}', message)
@@ -31,5 +63,6 @@ const confirmationService = async (transactionId: string, status: string) => {
 }
 
 export const paymentServices = {
+  createPaymentIntoDB,
   confirmationService,
 }

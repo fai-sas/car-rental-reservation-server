@@ -12,6 +12,7 @@ export interface TUser {
   address: string
   termsAccepted: boolean
   passwordChangedAt?: Date
+  isDeleted: boolean
 }
 
 export interface UserModel extends Model<TUser> {

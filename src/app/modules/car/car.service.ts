@@ -5,6 +5,8 @@ import { Car } from './car.model'
 import { Booking } from '../booking/booking.model'
 import { calculateTotalCost } from './car.utils'
 import mongoose, { Types } from 'mongoose'
+import QueryBuilder from '../../builder/QueryBuilder'
+import { CarSearchableFields } from './car.constants'
 
 const createCarIntoDb = async (payload: TCar) => {
   const existingCar = await Car.isCarExists(payload.name)
@@ -17,9 +19,57 @@ const createCarIntoDb = async (payload: TCar) => {
   return result
 }
 
-const getAllCarsFromDb = async () => {
-  const result = await Car.find()
-  return result
+// const getAllCarsFromDb = async (query: Record<string, unknown>) => {
+//   const carQuery = new QueryBuilder(Car.find(), query)
+//     .search(CarSearchableFields)
+//     .filter()
+//     .sort()
+//     .paginate()
+//     .fields()
+
+//   const meta = await carQuery.countTotal()
+//   const result = await carQuery.modelQuery
+
+//   return {
+//     meta,
+//     result,
+//   }
+// }
+
+// const getAllCarsFromDb = async (query: Record<string, unknown>) => {
+//   const carQuery = new QueryBuilder(Car.find(), query)
+//     .search(CarSearchableFields)
+//     .filter()
+//     .sort()
+//     .paginate()
+//     .fields();
+
+//   const meta = await carQuery.countTotal();
+//   const result = await carQuery.modelQuery;
+
+//   console.log('Query Result:', result); // Debugging step
+
+//   return {
+//     meta,
+//     result,
+//   };
+// };
+
+const getAllCarsFromDB = async (query: Record<string, unknown>) => {
+  const carQuery = new QueryBuilder(Car.find(), query)
+    .search(CarSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields()
+
+  const meta = await carQuery.countTotal()
+  const result = await carQuery.modelQuery
+
+  return {
+    meta,
+    result,
+  }
 }
 
 const getSingleCarFromDb = async (id: string) => {
@@ -118,7 +168,7 @@ const returnCarIntoDb = async (payload: {
 
 export const CarServices = {
   createCarIntoDb,
-  getAllCarsFromDb,
+  getAllCarsFromDB,
   getSingleCarFromDb,
   updateCarIntoDb,
   deleteCarFromDb,

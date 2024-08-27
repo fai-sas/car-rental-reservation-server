@@ -42,6 +42,10 @@ const userSchema = new Schema<TUser, UserModel>(
     phone: {
       type: String,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     address: {
       type: String,
       required: [true, 'Address is required'],
@@ -62,6 +66,17 @@ const userSchema = new Schema<TUser, UserModel>(
     timestamps: true,
   }
 )
+
+// filter out deleted documents
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
+
+userSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
 
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(

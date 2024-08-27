@@ -9,7 +9,18 @@ const app: Application = express()
 
 //parsers
 app.use(express.json())
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+// app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'https://vocal-fox-1c3e87.netlify.app',
+      'https://car-rental-cf.netlify.app',
+    ],
+    credentials: true,
+  })
+)
 app.use(cookieParser())
 
 //application routes

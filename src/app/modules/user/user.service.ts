@@ -51,6 +51,7 @@ const signInUserIntoDb = async (payload: Partial<TUser>) => {
     userId: user._id,
     email: user.email,
     role: user.role,
+    name: user.name,
   }
 
   const accessToken = createToken(
@@ -142,6 +143,7 @@ const refreshToken = async (token: string) => {
   const jwtPayload = {
     email: user.email,
     role: user.role,
+    name: user.name,
   }
 
   const accessToken = createToken(

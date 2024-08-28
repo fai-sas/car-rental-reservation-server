@@ -10,7 +10,7 @@ class QueryBuilder<T> {
   }
 
   search(searchableFields: string[]) {
-    const searchTerm = this?.query?.searchTerm
+    const searchTerm = this.query?.searchTerm as string
     if (searchTerm) {
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map(
@@ -26,9 +26,9 @@ class QueryBuilder<T> {
   }
 
   filter() {
-    const queryObj = { ...this.query } // copy
+    const queryObj = { ...this.query } // Copy query object
 
-    // Filtering
+    // Exclude fields that are not filters
     const excludeFields = [
       'searchTerm',
       'sort',
@@ -37,16 +37,24 @@ class QueryBuilder<T> {
       'fields',
       'priceRange',
     ]
-
     excludeFields.forEach((el) => delete queryObj[el])
 
-    if (queryObj.category === '') {
-      delete queryObj.category
+    // Handle price range filtering
+    const priceRange = this.query?.priceRange as number[] | undefined
+    if (priceRange) {
+      const [minPrice, maxPrice] = priceRange
+      queryObj.pricePerHour = { $gte: minPrice, $lte: maxPrice } // Use pricePerHour instead of price
     }
 
-    if (this.query.priceRange) {
-      const [minPrice, maxPrice] = this.query.priceRange as number[]
-      queryObj.price = { $gte: minPrice, $lte: maxPrice }
+    // Apply category and other filters (if any)
+    if (queryObj.category === '') {
+      delete queryObj.category // Remove category filter if it's empty
+    }
+
+    // Handle location filtering
+    const location = this.query?.location as string | undefined
+    if (location) {
+      queryObj.location = { $regex: location, $options: 'i' } // Filter by location, case-insensitive
     }
 
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>)
@@ -54,25 +62,18 @@ class QueryBuilder<T> {
     return this
   }
 
-  // sort() {
-  //   const sort = (this.query.sort as string)?.split(',')?.join(' ') || '-price'
-  //   this.modelQuery = this.modelQuery.sort(sort)
-
-  //   return this
-  // }
-
   sort() {
-    const sortParam = this.query.sort as string
+    const sortParam = this.query?.sort as string | undefined
     let sortCriteria = {}
 
     if (sortParam) {
       if (sortParam === 'priceAsc') {
-        sortCriteria = { price: 1 }
+        sortCriteria = { pricePerHour: 1 } // Ascending order
       } else if (sortParam === 'priceDesc') {
-        sortCriteria = { price: -1 }
+        sortCriteria = { pricePerHour: -1 } // Descending order
       }
     } else {
-      sortCriteria = { price: -1 }
+      sortCriteria = { pricePerHour: -1 } // Default to descending order if no param is provided
     }
 
     this.modelQuery = this.modelQuery.sort(sortCriteria)
@@ -81,8 +82,8 @@ class QueryBuilder<T> {
   }
 
   paginate() {
-    const page = Number(this.query.page) || 1
-    const limit = Number(this.query.limit) || 10
+    const page = Number(this.query?.page) || 1
+    const limit = Number(this.query?.limit) || 10
     const skip = (page - 1) * limit
 
     this.modelQuery = this.modelQuery.skip(skip).limit(limit)
@@ -92,7 +93,7 @@ class QueryBuilder<T> {
 
   fields() {
     const selectFields =
-      (this.query.fields as string)?.split(',')?.join(' ') || '-__v'
+      (this.query?.fields as string)?.split(',')?.join(' ') || '-__v'
 
     this.modelQuery = this.modelQuery.select(selectFields)
     return this
@@ -101,8 +102,8 @@ class QueryBuilder<T> {
   async countTotal() {
     const totalQueries = this.modelQuery.getFilter()
     const total = await this.modelQuery.model.countDocuments(totalQueries)
-    const page = Number(this.query.page) || 1
-    const limit = Number(this.query.limit) || 10
+    const page = Number(this.query?.page) || 1
+    const limit = Number(this.query?.limit) || 10
     const totalPage = Math.ceil(total / limit)
 
     return {

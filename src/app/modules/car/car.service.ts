@@ -19,42 +19,6 @@ const createCarIntoDb = async (payload: TCar) => {
   return result
 }
 
-// const getAllCarsFromDb = async (query: Record<string, unknown>) => {
-//   const carQuery = new QueryBuilder(Car.find(), query)
-//     .search(CarSearchableFields)
-//     .filter()
-//     .sort()
-//     .paginate()
-//     .fields()
-
-//   const meta = await carQuery.countTotal()
-//   const result = await carQuery.modelQuery
-
-//   return {
-//     meta,
-//     result,
-//   }
-// }
-
-// const getAllCarsFromDb = async (query: Record<string, unknown>) => {
-//   const carQuery = new QueryBuilder(Car.find(), query)
-//     .search(CarSearchableFields)
-//     .filter()
-//     .sort()
-//     .paginate()
-//     .fields();
-
-//   const meta = await carQuery.countTotal();
-//   const result = await carQuery.modelQuery;
-
-//   console.log('Query Result:', result); // Debugging step
-
-//   return {
-//     meta,
-//     result,
-//   };
-// };
-
 const getAllCarsFromDB = async (query: Record<string, unknown>) => {
   const carQuery = new QueryBuilder(Car.find(), query)
     .search(CarSearchableFields)

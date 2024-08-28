@@ -17,7 +17,15 @@ router.get('/', auth('admin'), BookingControllers.getAllBookings)
 
 router.get('/my-bookings', auth('user'), BookingControllers.getUserBookings)
 
-router.put('/:id', auth('admin', 'user'), BookingControllers.editBooking)
+router.get('/:id', BookingControllers.getSingleBooking)
+
+router.put('/approve/:id', auth('admin'), BookingControllers.editBooking)
+
+router.put(
+  '/modify/:id',
+  auth('admin', 'user'),
+  BookingControllers.modifyBooking
+)
 
 router.delete('/:id', auth('admin', 'user'), BookingControllers.deleteBooking)
 

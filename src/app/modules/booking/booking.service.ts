@@ -61,6 +61,16 @@ const getAllBookingsFromDb = async (carId: string, date: string) => {
   return result
 }
 
+const getSingleBookingFromDb = async (id: string) => {
+  const result = await Booking.findById(id)
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Booking Not Found')
+  }
+
+  return result
+}
+
 const getUserBookingsFromDb = async (userId: string) => {
   const user = new Types.ObjectId(userId)
 
@@ -78,12 +88,27 @@ const editBookingFromDb = async (id: string) => {
 
   const result = await Booking.findByIdAndUpdate(
     id,
-    { isApproved: true },
+    { isApproved: !isBookingExists?.isApproved },
     {
       new: true,
       runValidators: true,
     }
   )
+
+  return result
+}
+
+const modifyBookingIntoDb = async (id: string, payload: Partial<TBooking>) => {
+  const isBookingExists = await Booking.findById(id)
+
+  if (!isBookingExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Requested Booking Not Found')
+  }
+
+  const result = await Booking.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+    runValidators: true,
+  })
 
   return result
 }
@@ -110,7 +135,9 @@ const deleteBookingFromDb = async (id: string) => {
 export const BookingServices = {
   createBookingIntoDb,
   getAllBookingsFromDb,
+  getSingleBookingFromDb,
   getUserBookingsFromDb,
   editBookingFromDb,
+  modifyBookingIntoDb,
   deleteBookingFromDb,
 }

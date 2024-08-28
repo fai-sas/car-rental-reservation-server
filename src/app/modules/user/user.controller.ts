@@ -80,21 +80,8 @@ const getSingleUser = catchAsync(async (req, res) => {
   })
 })
 
-// const getUser = catchAsync(async (req, res) => {
-//   const userId = req?.user?.userId
-
-//   const result = await UserServices.getUserProfile(userId)
-
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'User profile retrieved successfully',
-//     data: result,
-//   })
-// })
-
 const getUser = catchAsync(async (req, res) => {
-  const userId = req.user?.userId // Extract user ID from req.user
+  const userId = req.user?.userId
 
   if (!userId) {
     return res.status(httpStatus.BAD_REQUEST).json({

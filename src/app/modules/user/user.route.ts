@@ -20,9 +20,9 @@ router.post(
 
 router.get('/', auth('admin'), UserControllers.getAllUsers)
 
-router.get('/:id', auth('admin'), UserControllers.getSingleUser)
-
 router.get('/my-profile', auth('user', 'admin'), UserControllers.getUser)
+
+router.get('/:id', auth('user', 'admin'), UserControllers.getSingleUser)
 
 router.put('/:id', auth('admin', 'user'), UserControllers.updateUser)
 

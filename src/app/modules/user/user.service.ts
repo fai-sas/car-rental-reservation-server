@@ -53,6 +53,8 @@ const signInUserIntoDb = async (payload: Partial<TUser>) => {
     email: user.email,
     role: user.role,
     name: user.name,
+    phone: user.phone,
+    address: user.address,
   }
 
   const accessToken = createToken(
@@ -102,20 +104,12 @@ const updateUserIntoDb = async (id: string, payload: Partial<TUser>) => {
   return result
 }
 
-// const getUserProfile = async (userId: string) => {
-//   const user = new Types.ObjectId(userId)
-
-//   const result = await User.find({ user }).populate('user').populate('car')
-
-//   return result
-// }
-
 const getUserProfile = async (userId: string) => {
   if (!Types.ObjectId.isValid(userId)) {
     throw new Error('Invalid user ID')
   }
 
-  const result = await User.findById(userId).populate('car')
+  const result = await User.findById(userId)
 
   if (!result) {
     throw new Error('User not found')

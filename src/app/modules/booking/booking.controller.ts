@@ -39,8 +39,21 @@ const getAllBookings = catchAsync(async (req, res) => {
   })
 })
 
+const getSingleBooking = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await BookingServices.getSingleBookingFromDb(id)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Booking retrieved successfully',
+    data: result,
+  })
+})
+
 const getUserBookings = catchAsync(async (req, res) => {
   const user = req.user.userId
+
   const result = await BookingServices.getUserBookingsFromDb(user)
 
   if (result.length === 0) {
@@ -72,6 +85,18 @@ const editBooking = catchAsync(async (req, res) => {
   })
 })
 
+const modifyBooking = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await BookingServices.modifyBookingIntoDb(id, req.body)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Booking updated successfully',
+    data: result,
+  })
+})
+
 const deleteBooking = catchAsync(async (req, res) => {
   const { id } = req.params
   const result = await BookingServices.deleteBookingFromDb(id)
@@ -87,7 +112,9 @@ const deleteBooking = catchAsync(async (req, res) => {
 export const BookingControllers = {
   createBooking,
   getAllBookings,
+  getSingleBooking,
   getUserBookings,
   deleteBooking,
+  modifyBooking,
   editBooking,
 }
